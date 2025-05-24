@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Therapy Session</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #f9fafb;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --ai-bubble: #e0e7ff;
+            --user-bubble: #6366f1;
+            --user-text: white;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+        
+        .therapy-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .header {
+            background-color: white;
+            padding: 12px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .therapist-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .therapist-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .therapist-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .therapist-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .therapist-status {
+            font-size: 0.75rem;
+            color: var(--success-color);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .therapist-status::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--success-color);
+        }
+        
+        .call-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .call-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .call-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .call-btn i {
+            font-size: 0.9rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .chat-sidebar {
+            width: 280px;
+            background-color: white;
+            border-right: 1px solid var(--border-color);
+            padding: 15px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-section p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+        
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--secondary-color);
+            scroll-behavior: smooth;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.ai {
+            align-items: flex-start;
+        }
+        
+        .message.user {
+            align-items: flex-end;
+            margin-left: auto;
+        }
+        
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .ai .message-bubble {
+            background-color: var(--ai-bubble);
+            border-bottom-left-radius: 4px;
+            color: var(--text-color);
+        }
+        
+        .user .message-bubble {
+            background-color: var(--user-bubble);
+            color: var(--user-text);
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+        
+        .therapy-tools {
+            padding: 12px 15px;
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .tools-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+        
+        .tool-buttons {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            scrollbar-width: none;
+        }
+        
+        .tool-buttons::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tool-btn {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .tool-btn:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        
+        .chat-input-container {
+            padding: 12px 15px;
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chat-input-wrapper {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-input {
+            width: 100%;
+            padding: 12px 15px;
+            padding-right: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+        
+        .chat-input::placeholder {
+            color: var(--text-light);
+            opacity: 0.7;
+        }
+        
+        .input-buttons {
+            position: absolute;
+            right: 8px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .voice-btn, .send-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .voice-btn:hover, .send-btn:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+        
+        .send-btn {
+            display: none;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background-color: var(--ai-bubble);
+            border-radius: 12px;
+            width: fit-content;
+            margin-bottom: 15px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-light);
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .chat-sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 20;
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            
+            .chat-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header {
+                padding: 10px 15px;
+            }
+            
+            .call-btn span {
+                display: none;
+            }
+            
+            .call-btn {
+                padding: 8px;
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                justify-content: center;
+            }
+            
+            .chat-messages {
+                padding: 15px 12px;
+            }
+            
+            .message-bubble {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+            
+            .therapy-tools, .chat-input-container {
+                padding: 10px 12px;
+            }
+            
+            .tool-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            
+            .chat-input {
+                padding: 10px 12px;
+                padding-right: 36px;
+                font-size: 0.9rem;
+            }
+            
+            .voice-btn, .send-btn {
+                font-size: 1rem;
+                width: 28px;
+                height: 28px;
+            }
+        }
+        
+        /* Animation for new messages */
+        @keyframes slideIn {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .new-message {
+            animation: slideIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="therapy-container">
+        <div class="header">
+            <div class="therapist-info">
+                <button class="mobile-menu-btn" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="therapist-avatar">AI</div>
+                <div class="therapist-details">
+                    <div class="therapist-name">AI Therapist</div>
+                    <div class="therapist-status">Online</div>
+                </div>
+            </div>
+            <div class="call-actions">
+                <button class="call-btn" id="videoCallBtn">
+                    <i class="fas fa-video"></i>
+                    <span>Video</span>
+                </button>
+                <button class="call-btn" id="voiceCallBtn">
+                    <i class="fas fa-phone"></i>
+                    <span>Voice</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="chat-sidebar" id="sidebar">
+                <div class="sidebar-section">
+                    <h3>Session Notes</h3>
+                    <p>Your AI therapist will record important insights from your session here.</p>
+                    <div class="notes-content" id="sessionNotes">
+                        <!-- Notes will be added dynamically -->
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Mood Tracker</h3>
+                    <div class="mood-tracker">
+                        <canvas id="moodChart" width="100%" height="150"></canvas>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>Therapy Tools</h3>
+                    <div class="therapy-tools-list">
+                        <button class="tool-btn full-width" data-tool="breathing">
+                            <i class="fas fa-wind"></i> Breathing Exercise
+                        </button>
+                        <button class="tool-btn full-width" data-tool="journal">
+                            <i class="fas fa-book"></i> Journal Prompt
+                        </button>
+                        <button class="tool-btn full-width" data-tool="meditation">
+                            <i class="fas fa-spa"></i> Guided Meditation
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-main">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="message-bubble">
+                            Hello! I'm your AI therapist. How are you feeling today?
+                        </div>
+                        <div class="message-time">10:00 AM</div>
+                    </div>
+                    
+                    <div class="message user">
+                        <div class="message-bubble">
+                            I've been feeling a bit anxious lately with work pressures.
+                        </div>
+                        <div class="message-time">10:02 AM</div>
+                    </div>
+                    
+                    <div class="message ai">
+                        <div class="message-bubble">
+                            I understand. Work stress can be challenging. Would you like to talk more about what specifically is causing this anxiety?
+                        </div>
+                        <div class="message-time">10:03 AM</div>
+                    </div>
+                    
+                    <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+                
+                <div class="therapy-tools">
+                    <div class="tools-title">Quick Tools</div>
+                    <div class="tool-buttons">
+                        <button class="tool-btn" data-tool="breathing">
+                            <i class="fas fa-wind"></i> Breathing
+                        </button>
+                        <button class="tool-btn" data-tool="mood">
+                            <i class="fas fa-smile"></i> Mood Check
+                        </button>
+                        <button class="tool-btn" data-tool="journal">
+                            <i class="fas fa-book"></i> Journal
+                        </button>
+                        <button class="tool-btn" data-tool="coping">
+                            <i class="fas fa-hands-helping"></i> Coping
+                        </button>
+                        <button class="tool-btn" data-tool="meditation">
+                            <i class="fas fa-spa"></i> Meditation
+                        </button>
+                        <button class="tool-btn" data-tool="sleep">
+                            <i class="fas fa-moon"></i> Sleep
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <input type="text" class="chat-input" id="messageInput" placeholder="Type your message...">
+                        <div class="input-buttons">
+                            <button class="voice-btn" id="voiceBtn" title="Voice Message">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="send-btn" id="sendBtn" title="Send">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chart.js for mood tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const chatMessages = document.getElementById('chatMessages');
+            const messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const voiceBtn = document.getElementById('voiceBtn');
+            const videoCallBtn = document.getElementById('videoCallBtn');
+            const voiceCallBtn = document.getElementById('voiceCallBtn');
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const sessionNotes = document.getElementById('sessionNotes');
+            
+            // Initialize mood chart
+            initMoodChart();
+            
+            // Toggle sidebar on mobile
+            menuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Close sidebar when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!sidebar.contains(e.target) && e.target !== menuBtn) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            
+            // Show send button when input has content
+            messageInput.addEventListener('input', function() {
+                if (messageInput.value.trim()) {
+                    sendBtn.style.display = 'flex';
+                    voiceBtn.style.display = 'none';
+                } else {
+                    sendBtn.style.display = 'none';
+                    voiceBtn.style.display = 'flex';
+                }
+            });
+            
+            // Send message on Enter or button click
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText) {
+                    addMessage(messageText, 'user');
+                    messageInput.value = '';
+                    sendBtn.style.display = 'none';
+                    voiceBtn.style.display = 'flex';
+                    
+                    // Show typing indicator
+                    typingIndicator.style.display = 'flex';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Simulate AI response after a delay
+                    setTimeout(sendAIResponse, 1500 + Math.random() * 2000);
+                }
+            }
+            
+            sendBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Add a new message to the chat
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender} new-message`;
+                
+                const time = getCurrentTime();
+                messageDiv.innerHTML = `
+                    <div class="message-bubble">${text}</div>
+                    <div class="message-time">${time}</div>
+                `;
+                
+                chatMessages.insertBefore(messageDiv, typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Add to session notes if from AI
+                if (sender === 'ai') {
+                    addToSessionNotes(text, time);
+                }
+            }
+            
+            // Simulate AI response
+            function sendAIResponse() {
+                typingIndicator.style.display = 'none';
+                
+                const responses = [
+                    "I hear you. Can you tell me more about that?",
+                    "That sounds challenging. How has this been affecting you?",
+                    "Thank you for sharing. What would you like to focus on today?",
+                    "I understand. Let's explore this together.",
+                    "That's an important observation. What do you think might help in this situation?",
+                    "It takes courage to talk about these feelings. Let's work through this.",
+                    "I'm here to support you. Would you like to explore coping strategies?",
+                    "Your feelings are valid. Let's examine this more closely."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'ai');
+            }
+            
+            // Add note to session notes
+            function addToSessionNotes(text, time) {
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'note';
+                noteDiv.innerHTML = `
+                    <p><strong>${time}:</strong> ${text}</p>
+                `;
+                sessionNotes.appendChild(noteDiv);
+            }
+            
+            // Get current time in HH:MM AM/PM format
+            function getCurrentTime() {
+                const now = new Date();
+                return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            
+            // Initialize mood chart
+            function initMoodChart() {
+                const ctx = document.getElementById('moodChart').getContext('2d');
+                const moodChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Mood Level',
+                            data: [6, 5, 4, 7, 5, 8, 7],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#6366f1',
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                min: 1,
+                                max: 10,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Voice message functionality
+            let isRecording = false;
+            let mediaRecorder;
+            let audioChunks = [];
+            
+            voiceBtn.addEventListener('click', function() {
+                if (!isRecording) {
+                    startRecording();
+                } else {
+                    stopRecording();
+                }
+            });
+            
+            function startRecording() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            mediaRecorder = new MediaRecorder(stream);
+                            mediaRecorder.start();
+                            isRecording = true;
+                            voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                            voiceBtn.style.color = '#ef4444';
+                            audioChunks = [];
+                            
+                            mediaRecorder.ondataavailable = function(e) {
+                                audioChunks.push(e.data);
+                            };
+                            
+                            mediaRecorder.onstop = function() {
+                                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                                // In a real app, you would send this blob to your server
+                                console.log('Audio recorded:', audioBlob);
+                                
+                                // For demo purposes, we'll just add a voice message indicator
+                                addMessage('[Voice message]', 'user');
+                                setTimeout(sendAIResponse, 1500);
+                            };
+                        })
+                        .catch(err => {
+                            console.error('Error accessing microphone:', err);
+                            alert('Could not access microphone. Please check permissions.');
+                        });
+                } else {
+                    alert('Your browser does not support voice recording.');
+                }
+            }
+            
+            function stopRecording() {
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    voiceBtn.style.color = '';
+                    
+                    // Stop all tracks in the stream
+                    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                }
+            }
+            
+            // Call buttons functionality
+            videoCallBtn.addEventListener('click', function() {
+                alert('Video call would start here. In a real app, this would use WebRTC.');
+                // Implement WebRTC video call
+            });
+            
+            voiceCallBtn.addEventListener('click', function() {
+                alert('Voice call would start here. In a real app, this would use WebRTC.');
+                // Implement WebRTC voice call
+            });
+            
+            // Tool buttons functionality
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tool = this.getAttribute('data-tool');
+                    let message = '';
+                    
+                    switch(tool) {
+                        case 'breathing':
+                            message = "Let's do a breathing exercise. Breathe in for 4 seconds, hold for 4 seconds, and exhale for 6 seconds. Repeat 5 times.";
+                            break;
+                        case 'mood':
+                            message = "On a scale of 1-10, how would you rate your current mood?";
+                            break;
+                        case 'journal':
+                            message = "Here's a journal prompt: What are three things you're grateful for today, and why?";
+                            break;
+                        case 'coping':
+                            message = "When feeling stressed, try these coping strategies: take a walk, practice deep breathing, or listen to calming music.";
+                            break;
+                        case 'meditation':
+                            message = "Would you like to try a 5-minute guided meditation? I can walk you through it.";
+                            break;
+                        case 'sleep':
+                            message = "Sleep is important for mental health. Try maintaining a consistent sleep schedule and a relaxing bedtime routine.";
+                            break;
+                        default:
+                            message = "Let me help you with this tool.";
+                    }
+                    
+                    addMessage(message, 'ai');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
