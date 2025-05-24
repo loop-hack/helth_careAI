@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentiCare - Your Personal AI Therapist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5b7cff;
+            --primary-light: #e6ebff;
+            --secondary: #6c63ff;
+            --dark: #1e1e2c;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #fd7e14;
+            --info: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f7ff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-buttons .btn {
+            margin-left: 15px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #f5f7ff 0%, #e6ebff 100%);
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .hero-image {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            display: block;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-card p {
+            color: #666;
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: #f9faff;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .step:not(:last-child):after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: -30px;
+            width: 60px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 700;
+            margin: 0 auto 25px;
+        }
+        
+        .step h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .step p {
+            color: #666;
+        }
+        
+        /* Demo Section */
+        .demo {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .demo-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-top: 50px;
+        }
+        
+        .demo-content {
+            flex: 1;
+        }
+        
+        .demo-content h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .demo-content p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .demo-chat {
+            flex: 1;
+            background-color: var(--light);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .message.ai {
+            justify-content: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            position: relative;
+        }
+        
+        .message.ai .message-content {
+            background-color: white;
+            border-top-left-radius: 5px;
+        }
+        
+        .message.user .message-content {
+            background-color: var(--primary);
+            color: white;
+            border-top-right-radius: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        
+        .chat-input button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .chat-input button:hover {
+            background-color: #4a6cf7;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background-color: #f9faff;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .testimonial-text:before {
+            content: '"';
+            font-size: 60px;
+            color: var(--primary-light);
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            z-index: -1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .author-info p {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        /* Security Section */
+        .security {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .security-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .security-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .security-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .security-card p {
+            color: #666;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 80px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 14px;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #4a6cf7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(91, 124, 255, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-large {
+            padding: 15px 40px;
+            font-size: 18px;
+        }
+
+        /* Voice Command Interface */
+        .voice-command-ui {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .voice-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(91, 124, 255, 0.4);
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .voice-btn.listening {
+            animation: pulse 1.5s infinite;
+            background-color: var(--danger);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        }
+
+        .command-history {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 300px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: none;
+        }
+
+        .command-history.show {
+            display: block;
+        }
+
+        .command-history h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--dark);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .command-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 14px;
+        }
+
+        .command-item:last-child {
+            border-bottom: none;
+        }
+
+        .command-success {
+            color: var(--success);
+        }
+
+        .command-error {
+            color: var(--danger);
+        }
+
+        .command-pending {
+            color: var(--warning);
+        }
+
+        .voice-feedback {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: none;
+        }
+
+        .voice-feedback.show {
+            display: block;
+        }
+
+        .voice-feedback p {
+            margin-bottom: 10px;
+        }
+
+        .voice-feedback-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Component Gallery */
+        .component-gallery {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1001;
+            display: none;
+        }
+
+        .component-gallery.show {
+            display: block;
+        }
+
+        .component-gallery h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .component-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .component-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .component-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 10px;
+        }
+
+        .dropdown-content a {
+            color: var(--dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-btn {
+            position: relative;
+            padding-right: 35px;
+        }
+
+        .dropdown-btn:after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+        }
+
+        /* Emotion Detection Modal */
+        .emotion-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .emotion-modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .emotion-modal h3 {
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        #video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .emotion-results {
+            text-align: left;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .demo-container {
+                flex-direction: column;
+            }
+            
+            .step:not(:last-child):after {
+                display: none;
+            }
+            
+            .steps {
+                gap: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+
+            .voice-command-ui {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .command-history, .voice-feedback {
+                width: 250px;
+                right: 20px;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>SentiCare</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <a href="#" class="btn btn-secondary">Log In</a>
+                    <a href="#" class="btn btn-primary">Sign Up</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your Personal AI Therapist</h1>
+            <p>Talk, vent, heal — with voice or text. SentiCare provides 24/7 emotional support with advanced AI that understands and cares.</p>
+            <div class="hero-buttons">
+                <div class="dropdown">
+                    <a href="#" class="btn btn-primary btn-large dropdown-btn">Start Chatting</a>
+                    <div class="dropdown-content">
+                        <a href="#" id="start-text-chat"><i class="fas fa-comment-dots"></i> Text Chat</a>
+                        <a href="#" id="start-voice-call"><i class="fas fa-phone"></i> Voice Call</a>
+                        <a href="#" id="start-video-call"><i class="fas fa-video"></i> Video Call</a>
+                        <a href="#" id="start-emotion-detection"><i class="fas fa-smile"></i> Emotion Detection</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#demo" class="btn btn-secondary btn-large dropdown-btn">Try Demo</a>
+                    <div class="dropdown-content">
+                        <a href="#" id="demo-text-chat"><i class="fas fa-comment-dots"></i> Text Demo</a>
+                        <a href="#" id="demo-voice-call"><i class="fas fa-phone"></i> Voice Demo</a>
+                        <a href="#" id="demo-video-call"><i class="fas fa-video"></i> Video Demo</a>
+                        <a href="#" id="demo-emotion-detection"><i class="fas fa-smile"></i> Emotion Demo</a>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="AI Therapy Chat Interface">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Healing Features</h2>
+                <p>SentiCare combines advanced AI with therapeutic techniques to provide meaningful emotional support</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🗣️</div>
+                    <h3>Voice & Text Chat</h3>
+                    <p>Express yourself however you feel comfortable - through speaking or typing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Mood Tracking</h3>
+                    <p>Visualize your emotional patterns and progress over time with our mood tracker.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Emotion Detection</h3>
+                    <p>Our AI can recognize emotions through your webcam (optional) to better understand you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>24/7 Availability</h3>
+                    <p>Always available when you need someone to talk to, day or night.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>100% Private</h3>
+                    <p>End-to-end encrypted conversations that stay between you and your AI therapist.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>CBT Techniques</h3>
+                    <p>Incorporates evidence-based Cognitive Behavioral Therapy methods.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How SentiCare Works</h2>
+                <p>Getting emotional support has never been easier. Just three simple steps to start feeling better.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Create your secure account in less than a minute. No credit card required to start.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Start Chatting</h3>
+                    <p>Begin your conversation through text or voice. Share as much or as little as you want.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Feel Better</h3>
+                    <p>Receive empathetic responses, helpful insights, and practical coping strategies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <div class="section-title">
+                <h2>Try Our Demo</h2>
+                <p>Experience how SentiCare responds with empathy and understanding</p>
+            </div>
+            <div class="demo-container">
+                <div class="demo-content">
+                    <h3>See SentiCare in Action</h3>
+                    <p>Our AI therapist is trained on thousands of therapeutic conversations to provide responses that are understanding, non-judgmental, and helpful.</p>
+                    <p>Try sending a message to see how SentiCare might respond to your concerns.</p>
+                    <div class="dropdown">
+                        <a href="#" class="btn btn-primary dropdown-btn">Get Full Access</a>
+                        <div class="dropdown-content">
+                            <a href="#" id="full-text-chat"><i class="fas fa-comment-dots"></i> Text Access</a>
+                            <a href="#" id="full-voice-call"><i class="fas fa-phone"></i> Voice Access</a>
+                            <a href="#" id="full-video-call"><i class="fas fa-video"></i> Video Access</a>
+                            <a href="#" id="full-emotion-detection"><i class="fas fa-smile"></i> Emotion Analysis</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-chat">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message ai">
+                            <div class="message-content">
+                                Hi there! I'm SentiCare, your AI therapist. How are you feeling today?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="user-input" placeholder="Type your message...">
+                        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What People Are Saying</h2>
+                <p>Don't just take our word for it - hear from people who've used SentiCare</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        SentiCare has been a game-changer for my anxiety. Having someone to talk to anytime, without judgment, has made such a difference in my life.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah J.">
+                        </div>
+                        <div class="author-info">
+                            <h4>Ankita singh</h4>
+                            <p>User for 18 months</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        As someone who was skeptical about therapy, SentiCare helped me open up in ways I never thought possible. It's surprisingly human-like in its responses.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Michael T.">
+                        </div>
+                        <div class="author-info">
+                            <h4>aman Tiwari.</h4>
+                            <p>User for 10 months</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        The mood tracking feature helped me recognize patterns in my emotions I never noticed before. Combined with the daily check-ins, it's been incredibly helpful.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya K.">
+                        </div>
+                        <div class="author-info">
+                            <h4>ansu sarma</h4>
+                            <p>User for 11 months</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="security">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Privacy is Our Priority</h2>
+                <p>We take every measure to ensure your conversations remain confidential</p>
+            </div>
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="security-icon"><i class="fas fa-lock"></i></div>
+                    <h3>End-to-End Encryption</h3>
+                    <p>All conversations are encrypted so only you can access them.</p>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>No Data Selling</h3>
+                    <p>We never sell or share your data with third parties.</p>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon"><i class="fas fa-trash"></i></div>
+                    <h3>Delete Anytime</h3>
+                    <p>You can permanently delete your chat history whenever you want.</p>
+                </div>
+                <div class="security-card">
+                    <div class="security-icon"><i class="fas fa-user-secret"></i></div>
+                    <h3>Anonymous Use</h3>
+                    <p>No need to share personal information to use our service.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start Your Healing Journey?</h2>
+            <p>Join thousands of others who've found emotional support with SentiCare. It's free to get started.</p>
+            <div class="dropdown">
+                <a href="#" class="btn btn-secondary btn-large dropdown-btn">Start Free Chat</a>
+                <div class="dropdown-content">
+                    <a href="#" id="free-text-chat"><i class="fas fa-comment-dots"></i> Text Chat</a>
+                            </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>SentiCare</h3>
+                    <p>Your AI companion for emotional wellness and mental health support.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="https://t.me/Wildflowersoul_116"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Product</h3>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a>9117890067</li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SentiCare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Voice Command Interface -->
+    <div class="voice-command-ui">
+        <button id="voice-command-btn" class="voice-btn" title="Voice Commands">
+            <i class="fas fa-microphone"></i>
+        </button>
+        <div id="command-history" class="command-history">
+            <h3>Command History</h3>
+            <div id="command-list"></div>
+        </div>
+        <div id="voice-feedback" class="voice-feedback">
+            <p id="heard-text">Heard: <span id="command-text"></span></p>
+            <p id="action-text">Action: <span id="action-result"></span></p>
+            <div class="voice-feedback-actions">
+                <button id="retry-btn" class="btn btn-secondary">Retry</button>
+                <button id="confirm-btn" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Component Gallery -->
+    <div id="component-gallery" class="component-gallery">
+        <h2>Available Components</h2>
+        <div class="component-grid">
+            <div class="component-card" data-component="hero">
+                <h3>Hero Section</h3>
+                <p>Large banner with headline and call-to-action</p>
+            </div>
+            <div class="component-card" data-component="features">
+                <h3>Features Grid</h3>
+                <p>Showcase of key features with icons</p>
+            </div>
+            <div class="component-card" data-component="testimonials">
+                <h3>Testimonials</h3>
+                <p>User reviews with profile pictures</p>
+            </div>
+            <div class="component-card" data-component="contact-form">
+                <h3>Contact Form</h3>
+                <p>Form with name, email, and message fields</p>
+            </div>
+            <div class="component-card" data-component="chat-interface">
+                <h3>Chat Interface</h3>
+                <p>Interactive chat with AI responses</p>
+            </div>
+            <div class="component-card" data-component="pricing">
+                <h3>Pricing Table</h3>
+                <p>Comparison of different plans</p>
+            </div>
+        </div>
+        <button id="close-gallery" class="btn btn-secondary" style="margin-top: 20px; width: 100%;">Close</button>
+    </div>
+
+    <script>
+        // Demo Chat Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
+            
+            // AI Responses
+            const aiResponses = [
+                "I hear that you're feeling this way. Would you like to talk more about what's been on your mind?",
+                "It sounds like you're going through a tough time. Remember that what you're feeling is valid and important.",
+                "I appreciate you sharing that with me. How has this been affecting your daily life?",
+                "That sounds challenging. Have you noticed any patterns or triggers for these feelings?",
+                "I'm here to listen. What do you think might help you feel even a little bit better in this moment?",
+                "Thank you for opening up about this. You're showing courage by exploring these feelings.",
+                "I can sense this is really weighing on you. Would it help to explore some coping strategies together?"
+            ];
+            
+            // Send message function
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message
+                addMessage(message, 'user');
+                userInput.value = '';
+                
+                // Simulate AI thinking
+                setTimeout(() => {
+                    const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                    addMessage(randomResponse, 'ai');
+                }, 1000);
+            }
+            
+            // Add message to chat
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.textContent = text;
+                
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Voice Command Functionality
+            const voiceBtn = document.getElementById('voice-command-btn');
+            const commandHistory = document.getElementById('command-history');
+            const commandList = document.getElementById('command-list');
+            const voiceFeedback = document.getElementById('voice-feedback');
+            const commandText = document.getElementById('command-text');
+            const actionResult = document.getElementById('action-result');
+            const retryBtn = document.getElementById('retry-btn');
+            const confirmBtn = document.getElementById('confirm-btn');
+            const componentGallery = document.getElementById('component-gallery');
+            const closeGallery = document.getElementById('close-gallery');
+            const componentCards = document.querySelectorAll('.component-card');
+
+            let recognition;
+            let isListening = false;
+            let currentCommand = '';
+            let lastCommand = '';
+
+            // Initialize voice recognition
+            function initVoiceRecognition() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                
+                if (!SpeechRecognition) {
+                    showFeedback("Voice commands not supported in your browser", false);
+                    voiceBtn.disabled = true;
+                    return;
+                }
+                
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = () => {
+                    isListening = true;
+                    voiceBtn.classList.add('listening');
+                    showFeedback("Listening...", true);
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    currentCommand = transcript;
+                    processVoiceCommand(transcript);
+                };
+                
+                recognition.onerror = (event) => {
+                    showFeedback(`Error: ${event.error}`, false);
+                    stopListening();
+                };
+                
+                recognition.onend = () => {
+                    if (isListening) {
+                        recognition.start();
+                    }
+                };
+            }
+
+            // Process voice commands
+            function processVoiceCommand(command) {
+                command = command.toLowerCase().trim();
+                let response = "Command executed";
+                let success = true;
+                
+                // Navigation commands
+                if (command.includes('home') || command.includes('main page')) {
+                    window.location.hash = '#';
+                    response = "Navigated to Home";
+                }
+                else if (command.includes('features')) {
+                    window.location.hash = '#features';
+                    response = "Navigated to Features";
+                }
+                else if (command.includes('how it works') || command.includes('works')) {
+                    window.location.hash = '#how-it-works';
+                    response = "Navigated to How It Works";
+                }
+                else if (command.includes('demo')) {
+                    window.location.hash = '#demo';
+                    response = "Navigated to Demo";
+                }
+                else if (command.includes('testimonials') || command.includes('reviews')) {
+                    window.location.hash = '#testimonials';
+                    response = "Navigated to Testimonials";
+                }
+                
+                // UI modification commands
+                else if (command.includes('full screen') && command.includes('hero')) {
+                    document.querySelector('.hero').style.minHeight = '100vh';
+                    response = "Hero section set to full screen";
+                }
+                else if (command.includes('normal') && command.includes('hero')) {
+                    document.querySelector('.hero').style.minHeight = '';
+                    response = "Hero section set to normal size";
+                }
+                else if (command.includes('change color') || command.includes('change theme')) {
+                    const colors = ['blue', 'purple', 'green', 'red', 'orange'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    document.documentElement.style.setProperty('--primary', `var(--${randomColor})`);
+                    response = `Changed theme to ${randomColor}`;
+                }
+                else if (command.includes('show components') || command.includes('component gallery')) {
+                    componentGallery.classList.add('show');
+                    response = "Opened component gallery";
+                }
+                else if (command.includes('hide components') || command.includes('close gallery')) {
+                    componentGallery.classList.remove('show');
+                    response = "Closed component gallery";
+                }
+                
+                // Chat commands
+                else if (command.includes('connect chat') || command.includes('connect to backend')) {
+                    document.getElementById('chat-messages').innerHTML += `
+                        <div class="message ai">
+                            <div class="message-content">
+                                Successfully connected to therapy backend
+                            </div>
+                        </div>
+                    `;
+                    response = "Chat connected to backend";
+                }
+                else if (command.includes('clear chat')) {
+                    document.getElementById('chat-messages').innerHTML = '';
+                    response = "Chat history cleared";
+                }
+                
+                // Undo/redo commands
+                else if (command.includes('undo')) {
+                    // Implement undo logic here
+                    response = "Undo last action";
+                }
+                else if (command.includes('redo')) {
+                    // Implement redo logic here
+                    response = "Redo last action";
+                }
+                
+                // Help command
+                else if (command.includes('help') || command.includes('what can i say')) {
+                    response = "You can say: 'Go to features', 'Make hero full screen', 'Change color', 'Show components', 'Connect chat'";
+                }
+                
+                // Unknown command
+                else {
+                    response = "Command not recognized";
+                    success = false;
+                }
+                
+                // Show feedback and add to history
+                showFeedback(response, success);
+                addToCommandHistory(command, response, success);
+                lastCommand = command;
+            }
+
+            // Show feedback to user
+            function showFeedback(message, success) {
+                commandText.textContent = currentCommand;
+                actionResult.textContent = message;
+                actionResult.className = success ? 'command-success' : 'command-error';
+                voiceFeedback.classList.add('show');
+            }
+
+            // Add command to history
+            function addToCommandHistory(command, response, success) {
+                const commandItem = document.createElement('div');
+                commandItem.className = `command-item ${success ? 'command-success' : 'command-error'}`;
+                commandItem.innerHTML = `
+                    <strong>You said:</strong> ${command}<br>
+                    <strong>Action:</strong> ${response}
+                `;
+                commandList.prepend(commandItem);
+                commandHistory.classList.add('show');
+            }
+
+            // Stop listening
+            function stopListening() {
+                isListening = false;
+                voiceBtn.classList.remove('listening');
+                recognition.stop();
+            }
+
+            // Toggle listening
+            function toggleListening() {
+                if (isListening) {
+                    stopListening();
+                } else {
+                    recognition.start();
+                }
+            }
+
+            // Initialize component gallery
+            function initComponentGallery() {
+                componentCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        const component = this.getAttribute('data-component');
+                        // Implement component addition logic here
+                        showFeedback(`Added ${component} component`, true);
+                        componentGallery.classList.remove('show');
+                    });
+                });
+
+                closeGallery.addEventListener('click', function() {
+                    componentGallery.classList.remove('show');
+                });
+            }
+
+            // Event listeners for voice interface
+            voiceBtn.addEventListener('click', toggleListening);
+            retryBtn.addEventListener('click', function() {
+                recognition.start();
+                voiceFeedback.classList.remove('show');
+            });
+            confirmBtn.addEventListener('click', function() {
+                voiceFeedback.classList.remove('show');
+            });
+
+            // Close feedback when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!voiceFeedback.contains(e.target)) {
+                    voiceFeedback.classList.remove('show');
+                }
+            });
+
+            // Initialize everything
+            initVoiceRecognition();
+            initComponentGallery();
+
+            // Sample commands to show in history
+            const sampleCommands = [
+                {command: "go to features", response: "Navigated to Features", success: true},
+                {command: "make hero full screen", response: "Hero section set to full screen", success: true},
+                {command: "show components", response: "Opened component gallery", success: true}
+            ];
+
+            sampleCommands.forEach(cmd => {
+                addToCommandHistory(cmd.command, cmd.response, cmd.success);
+            });
+        });
+    </script>
+</body>
+</html>
