@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Previous head content remains the same -->
+    <style>
+        /* Add these new styles to your existing CSS */
+        
+        /* Voice Interface Styles */
+        .voice-interface {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .mic-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(91, 124, 255, 0.4);
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .mic-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .mic-btn.listening {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(91, 124, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(91, 124, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(91, 124, 255, 0); }
+        }
+        
+        .voice-command-panel {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: none;
+        }
+        
+        .command-history {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 10px;
+        }
+        
+        .command-item {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .command-item.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .command-item.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .command-feedback {
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .voice-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Component Gallery */
+        .component-gallery {
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .component-card {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .component-card:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Previous HTML content remains the same until before the scripts -->
+    
+    <!-- Voice Interface -->
+    <div class="voice-interface">
+        <div class="voice-command-panel" id="voice-panel">
+            <div class="command-feedback" id="command-feedback">
+                <strong>Heard:</strong> <span id="heard-text"></span>
+                <div class="voice-actions">
+                    <button class="btn btn-secondary btn-small" id="retry-btn">Retry</button>
+                </div>
+            </div>
+            <div class="command-history" id="command-history">
+                <div class="command-item success">System: Ready for voice commands</div>
+            </div>
+            <div class="component-gallery" id="component-gallery">
+                <div class="component-card" data-command="Add a contact form">
+                    <i class="fas fa-envelope" style="font-size: 20px; margin-bottom: 5px;"></i>
+                    <div>Contact Form</div>
+                </div>
+                <div class="component-card" data-command="Add a chat interface">
+                    <i class="fas fa-comments" style="font-size: 20px; margin-bottom: 5px;"></i>
+                    <div>Chat Interface</div>
+                </div>
+                <div class="component-card" data-command="Add a testimonial section">
+                    <i class="fas fa-quote-left" style="font-size: 20px; margin-bottom: 5px;"></i>
+                    <div>Testimonials</div>
+                </div>
+                <div class="component-card" data-command="Add a pricing table">
+                    <i class="fas fa-tags" style="font-size: 20px; margin-bottom: 5px;"></i>
+                    <div>Pricing</div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" id="show-components-btn">Show Components</button>
+            <button class="btn btn-primary" id="undo-btn">Undo Last</button>
+        </div>
+        <button class="mic-btn" id="mic-btn">
+            <i class="fas fa-microphone"></i>
+        </button>
+    </div>
+
+    <script>
+        // Previous JavaScript remains the same
+        
+        // Voice Interface Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const micBtn = document.getElementById('mic-btn');
+            const voicePanel = document.getElementById('voice-panel');
+            const commandFeedback = document.getElementById('command-feedback');
+            const heardText = document.getElementById('heard-text');
+            const commandHistory = document.getElementById('command-history');
+            const retryBtn = document.getElementById('retry-btn');
+            const showComponentsBtn = document.getElementById('show-components-btn');
+            const componentGallery = document.getElementById('component-gallery');
+            const undoBtn = document.getElementById('undo-btn');
+            
+            // Sample commands and responses
+            const commandResponses = {
+                "add a background of ocean": {
+                    action: function() {
+                        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1505118380757-91f5f5632de0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80')";
+                        document.body.style.backgroundSize = "cover";
+                        return "Changed background to ocean image";
+                    }
+                },
+                "add a card with chat interface": {
+                    action: function() {
+                        // This would actually create a new chat interface component
+                        return "Added chat interface card to the page";
+                    }
+                },
+                "add a form with input and submit button": {
+                    action: function() {
+                        // This would create a form component
+                        return "Added contact form with submit button";
+                    }
+                },
+                "show me available components": {
+                    action: function() {
+                        componentGallery.style.display = "grid";
+                        return "Showing available components";
+                    }
+                },
+                "hide components": {
+                    action: function() {
+                        componentGallery.style.display = "none";
+                        return "Hiding components gallery";
+                    }
+                },
+                "make the text bold": {
+                    action: function() {
+                        // Would apply to selected element
+                        return "Made text bold";
+                    }
+                },
+                "set layout to grid of 3 columns": {
+                    action: function() {
+                        // Would modify layout
+                        return "Changed layout to 3-column grid";
+                    }
+                },
+                "undo last action": {
+                    action: function() {
+                        // Would undo last change
+                        return "Undid last action";
+                    }
+                }
+            };
+            
+            // Toggle voice panel
+            micBtn.addEventListener('click', function() {
+                voicePanel.style.display = voicePanel.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // Show components gallery
+            showComponentsBtn.addEventListener('click', function() {
+                componentGallery.style.display = componentGallery.style.display === 'grid' ? 'none' : 'grid';
+            });
+            
+            // Component click handler
+            document.querySelectorAll('.component-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const command = this.getAttribute('data-command');
+                    processVoiceCommand(command);
+                });
+            });
+            
+            // Undo button
+            undoBtn.addEventListener('click', function() {
+                processVoiceCommand("undo last action");
+            });
+            
+            // Simulate voice command processing
+            function processVoiceCommand(command) {
+                // Show feedback
+                commandFeedback.style.display = 'block';
+                heardText.textContent = command;
+                
+                // Add to history
+                addCommandToHistory(command, 'user');
+                
+                // Process command after slight delay
+                setTimeout(() => {
+                    const normalizedCommand = command.toLowerCase();
+                    
+                    if (commandResponses[normalizedCommand]) {
+                        const result = commandResponses[normalizedCommand].action();
+                        addCommandToHistory(result, 'system', 'success');
+                    } else {
+                        addCommandToHistory("Sorry, I didn't understand that command. Try something like 'Add a contact form' or 'Change background'.", 'system', 'error');
+                    }
+                }, 800);
+                
+                // Visual feedback
+                micBtn.classList.add('listening');
+                setTimeout(() => {
+                    micBtn.classList.remove('listening');
+                }, 1000);
+            }
+            
+            // Add command to history
+            function addCommandToHistory(text, sender, type = '') {
+                const item = document.createElement('div');
+                item.className = `command-item ${type}`;
+                item.innerHTML = `<strong>${sender}:</strong> ${text}`;
+                commandHistory.appendChild(item);
+                commandHistory.scrollTop = commandHistory.scrollHeight;
+            }
+            
+            // Retry button
+            retryBtn.addEventListener('click', function() {
+                commandFeedback.style.display = 'none';
+                // In a real app, this would re-activate the microphone
+            });
+            
+            // Demo commands - in a real app these would come from voice recognition
+            setTimeout(() => {
+                processVoiceCommand("Add a background of ocean");
+            }, 2000);
+            
+            setTimeout(() => {
+                processVoiceCommand("Add a card with chat interface");
+            }, 4000);
+            
+            // Keyboard shortcut for demo purposes
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === ' ') {
+                    e.preventDefault();
+                    const sampleCommands = [
+                        "Add a testimonial section",
+                        "Make the header sticky",
+                        "Change theme to dark mode",
+                        "Add a pricing table",
+                        "Insert a call-to-action button"
+                    ];
+                    const randomCommand = sampleCommands[Math.floor(Math.random() * sampleCommands.length)];
+                    processVoiceCommand(randomCommand);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
