@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AI Assistant Call</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-r5YTpRHJ4kzw0Dyo28hbgc4cda+nTtI4IUm+6jAvCqtv3g4ViPC5c1I8K9ll2tZ1aZT3ac3ynhi2PYH7UFcHCA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    :root {
+      --primary-color: #007AFF;
+      --success-color: #34C759;
+      --danger-color: #FF3B30;
+      --text-color: #FFFFFF;
+      --secondary-text: #AAAAAA;
+      --bg-color: #000000;
+      --control-bg: rgba(255, 255, 255, 0.1);
+      --control-hover: rgba(255, 255, 255, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .call-container,
+    .incoming-call {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .caller-info {
+      margin-top: 50px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .caller-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #007AFF, #34C759);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      color: var(--text-color);
+      margin: 0 auto 25px;
+      user-select: none;
+      box-shadow: 0 4px 20px rgba(0, 122, 255, 0.3);
+    }
+
+    .caller-name {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      user-select: none;
+    }
+
+    .call-status {
+      font-size: 18px;
+      color: var(--secondary-text);
+      margin-bottom: 10px;
+      user-select: none;
+      min-height: 24px;
+    }
+
+    .answer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding-top: 40px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .answer-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      color: var(--text-color);
+      font-size: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+
+    .answer-btn i {
+      margin-bottom: 5px;
+    }
+
+    .answer-btn span {
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .decline {
+      background: var(--danger-color);
+      box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3);
+    }
+
+    .decline:hover {
+      background: #E02B20;
+      transform: scale(1.05);
+    }
+
+    .answer {
+      background: var(--success-color);
+      box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
+    }
+
+    .answer:hover {
+      background: #28A745;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 480px) {
+      .caller-avatar {
+        width: 120px;
+        height: 120px;
+        font-size: 48px;
+      }
+
+      .caller-name {
+        font-size: 24px;
+      }
+      
+      .call-status {
+        font-size: 16px;
+      }
+
+      .answer-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 24px;
+      }
+
+      .answer-btn span {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="incoming-call" id="incomingCall">
+    <div class="caller-avatar" aria-hidden="true">AI</div>
+    <h1 class="caller-name">AI Assistant</h1>
+    <p class="call-status">Incoming call...</p>
+    <div class="answer-controls">
+      <button class="answer-btn decline" id="declineCall" aria-label="Decline Call">
+        <i class="fas fa-phone-slash"></i>
+        <span>Decline</span>
+      </button>
+      <button class="answer-btn answer" id="answerCall" aria-label="Answer Call">
+        <i class="fas fa-phone"></i>
+        <span>Answer</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const incomingCallScreen = document.getElementById('incomingCall');
+      const answerCallBtn = document.getElementById('answerCall');
+      const declineCallBtn = document.getElementById('declineCall');
+
+      // Answer the incoming call
+      answerCallBtn.addEventListener('click', () => {
+        incomingCallScreen.style.display = 'none';
+        alert("Call answered! (In a real app, this would connect the call)");
+      });
+
+      // Decline the incoming call
+      declineCallBtn.addEventListener('click', () => {
+        incomingCallScreen.style.display = 'none';
+        alert("Call declined!");
+      });
+    });
+  </script>
+</body>
+</html>
