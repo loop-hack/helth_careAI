@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Call</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .call-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .caller-info {
+            margin-top: 50px;
+            flex: 1;
+        }
+        
+        .caller-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #fff;
+        }
+        
+        .caller-name {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .call-status {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        
+        .call-timer {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .call-controls {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 40px;
+        }
+        
+        .control-row {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 15px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .control-btn i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .control-btn span {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .end-call {
+            background-color: #ff3b30;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .end-call i {
+            font-size: 30px;
+            color: white;
+        }
+        
+        .waveform {
+            width: 100%;
+            height: 60px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .wave {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 200px;
+            height: 40px;
+        }
+        
+        .bar {
+            width: 4px;
+            background-color: #34c759;
+            border-radius: 2px;
+            animation: equalize 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes equalize {
+            0%, 100% { height: 10px; }
+            50% { height: 30px; }
+        }
+        
+        .incoming-call {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        .incoming-call .caller-avatar {
+            width: 150px;
+            height: 150px;
+            font-size: 60px;
+        }
+        
+        .incoming-call .caller-name {
+            font-size: 28px;
+            margin: 20px 0 10px;
+        }
+        
+        .incoming-call .call-status {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        
+        .answer-controls {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            padding: 0 40px;
+        }
+        
+        .answer-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .decline {
+            background-color: #ff3b30;
+        }
+        
+        .answer {
+            background-color: #34c759;
+        }
+        
+        /* Font Awesome icons (simulated) */
+        .fa {
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .fa-phone:before { content: "📞"; }
+        .fa-phone-slash:before { content: "📵"; }
+        .fa-microphone:before { content: "🎤"; }
+        .fa-microphone-slash:before { content: "🎤\FE0E"; opacity: 0.5; }
+        .fa-volume-up:before { content: "🔊"; }
+        .fa-keypad:before { content: "⌨️"; }
+        .fa-user:before { content: "👤"; }
+    </style>
+</head>
+<body>
+    <div class="incoming-call" id="incomingCall">
+        <div class="caller-avatar">AI</div>
+        <div class="caller-name">AI Assistant</div>
+        <div class="call-status">Incoming call...</div>
+        <div class="answer-controls">
+            <button class="answer-btn decline" id="declineCall">
+                <i class="fa fa-phone-slash"></i>
+                <span>Decline</span>
+            </button>
+            <button class="answer-btn answer" id="answerCall">
+                <i class="fa fa-phone"></i>
+                <span>Answer</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="call-container" id="activeCall" style="display: none;">
+        <div class="caller-info">
+            <div class="caller-avatar">AI</div>
+            <div class="caller-name">AI Assistant</div>
+            <div class="call-status" id="callStatus">Calling...</div>
+            <div class="call-timer" id="callTimer">00:00</div>
+            
+            <div class="waveform">
+                <div class="wave" id="wave">
+                    <div class="bar" style="animation-delay: 0s"></div>
+                    <div class="bar" style="animation-delay: 0.2s"></div>
+                    <div class="bar" style="animation-delay: 0.4s"></div>
+                    <div class="bar" style="animation-delay: 0.6s"></div>
+                    <div class="bar" style="animation-delay: 0.8s"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="call-controls">
+            <div class="control-row">
+                <button class="control-btn" id="muteBtn">
+                    <i class="fa fa-microphone"></i>
+                    <span>Mute</span>
+                </button>
+                <button class="control-btn" id="keypadBtn">
+                    <i class="fa fa-keypad"></i>
+                    <span>Keypad</span>
+                </button>
+                <button class="control-btn" id="speakerBtn">
+                    <i class="fa fa-volume-up"></i>
+                    <span>Speaker</span>
+                </button>
+            </div>
+        </div>
+        
+        <button class="end-call" id="endCallBtn">
+            <i class="fa fa-phone-slash"></i>
+        </button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const incomingCallScreen = document.getElementById('incomingCall');
+        const activeCallScreen = document.getElementById('activeCall');
+        const answerCallBtn = document.getElementById('answerCall');
+        const declineCallBtn = document.getElementById('declineCall');
+        const endCallBtn = document.getElementById('endCallBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const callStatus = document.getElementById('callStatus');
+        const callTimer = document.getElementById('callTimer');
+        const wave = document.getElementById('wave');
+        
+        // Call state
+        let callActive = false;
+        let callStartTime;
+        let timerInterval;
+        let isMuted = false;
+        
+        // Speech recognition and synthesis
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        const synth = window.speechSynthesis;
+        
+        // Initialize
+        function init() {
+            // Show incoming call screen
+            incomingCallScreen.style.display = 'flex';
+            
+            // Set up event listeners
+            answerCallBtn.addEventListener('click', answerCall);
+            declineCallBtn.addEventListener('click', declineCall);
+            endCallBtn.addEventListener('click', endCall);
+            muteBtn.addEventListener('click', toggleMute);
+            
+            // Configure speech recognition
+            if (SpeechRecognition) {
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = (event) => {
+                    if (!callActive) return;
+                    
+                    const transcript = Array.from(event.results)
+                        .map(result => result[0])
+                        .map(result => result.transcript)
+                        .join('');
+                    
+                    if (event.results[0].isFinal) {
+                        processUserInput(transcript);
+                    }
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error', event.error);
+                    callStatus.textContent = `Error: ${event.error}`;
+                };
+            } else {
+                console.warn('Speech recognition not supported');
+                callStatus.textContent = "Voice commands not supported";
+            }
+        }
+        
+        // Call functions
+        function answerCall() {
+            incomingCallScreen.style.display = 'none';
+            activeCallScreen.style.display = 'flex';
+            callActive = true;
+            callStartTime = new Date();
+            startTimer();
+            callStatus.textContent = "Connected";
+            
+            // Start speech recognition if available
+            if (SpeechRecognition) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.error("Recognition start error:", e);
+                }
+            }
+            
+            // AI greeting
+            setTimeout(() => {
+                speak("Hello! I'm your AI assistant. How can I help you today?");
+            }, 1000);
+        }
+        
+        function declineCall() {
+            endCall();
+            incomingCallScreen.style.display = 'none';
+            document.body.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100vh;"><h1>Call declined</h1></div>';
+        }
+        
+        function endCall() {
+            callActive = false;
+            clearInterval(timerInterval);
+            
+            if (SpeechRecognition) {
+                recognition.stop();
+            }
+            
+            synth.cancel();
+            
+            // Show call ended screen briefly
+            activeCallScreen.style.display = 'none';
+            document.body.innerHTML = `
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;">
+                    <h1 style="margin-bottom:20px;">Call ended</h1>
+                    <p style="margin-bottom:40px;" id="finalTimer"></p>
+                    <button onclick="window.location.reload()" style="padding:10px 20px; background:#007aff; color:white; border:none; border-radius:20px;">New Call</button>
+                </div>
+            `;
+            
+            // Display final call duration
+            if (callStartTime) {
+                const finalDuration = Math.floor((new Date() - callStartTime) / 1000);
+                const minutes = Math.floor(finalDuration / 60).toString().padStart(2, '0');
+                const seconds = (finalDuration % 60).toString().padStart(2, '0');
+                document.getElementById('finalTimer').textContent = `Duration: ${minutes}:${seconds}`;
+            }
+        }
+        
+        function toggleMute() {
+            isMuted = !isMuted;
+            if (isMuted) {
+                muteBtn.innerHTML = '<i class="fa fa-microphone-slash"></i><span>Unmute</span>';
+                // In a real app, you would mute the microphone here
+            } else {
+                muteBtn.innerHTML = '<i class="fa fa-microphone"></i><span>Mute</span>';
+                // In a real app, you would unmute the microphone here
+            }
+        }
+        
+        // Timer functions
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        function updateTimer() {
+            const now = new Date();
+            const duration = Math.floor((now - callStartTime) / 1000);
+            const minutes = Math.floor(duration / 60).toString().padStart(2, '0');
+            const seconds = (duration % 60).toString().padStart(2, '0');
+            callTimer.textContent = `${minutes}:${seconds}`;
+        }
+        
+        // Speech functions
+        function speak(text) {
+            if (!callActive) return;
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1;
+            utterance.pitch = 1;
+            synth.speak(utterance);
+        }
+        
+        function processUserInput(input) {
+            if (!callActive) return;
+            
+            // Simple AI response - in a real app, you would call an AI API here
+            const response = generateAIResponse(input);
+            speak(response);
+        }
+        
+        function generateAIResponse(input) {
+            const lowerInput = input.toLowerCase();
+            
+            if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
+                return "Hello there! What can I do for you?";
+            } else if (lowerInput.includes('how are you')) {
+                return "I'm just a computer program, but I'm functioning perfectly! How about you?";
+            } else if (lowerInput.includes('thank')) {
+                return "You're welcome! Is there anything else you need help with?";
+            } else if (lowerInput.includes('bye') || lowerInput.includes('goodbye')) {
+                endCall();
+                return "Goodbye! Have a great day!";
+            } else if (lowerInput.includes('name')) {
+                return "I'm your AI assistant. You can call me Alex!";
+            } else if (lowerInput.includes('time')) {
+                return `The current time is ${new Date().toLocaleTimeString()}.`;
+            } else if (lowerInput.includes('date')) {
+                return `Today's date is ${new Date().toLocaleDateString()}.`;
+            } else {
+                return "I understand you said: " + input + ". Can you tell me more about that?";
+            }
+        }
+        
+        // Initialize the app
+        window.onload = init;
+    </script>
+</body>
+</html>
