@@ -936,12 +936,12 @@
                 <ul class="nav-links">
                     <li><a href="#features">Features</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="chat2.html">Demo</a></li>
                     <li><a href="#testimonials">Testimonials</a></li>
                 </ul>
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-secondary">Log In</a>
-                    <a href="#" class="btn btn-primary">Sign Up</a>
+                    <a href="login_section.html" class="btn btn-secondary">Log In</a>
+                    <a href="sing_up.html" class="btn btn-primary">Sign Up</a>
                 </div>
             </nav>
         </div>
@@ -1290,6 +1290,41 @@
             const chatMessages = document.getElementById('chat-messages');
             const userInput = document.getElementById('user-input');
             const sendBtn = document.getElementById('send-btn');
+
+
+        //pintu 
+        // Check URL parameters when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const callType = urlParams.get('call');
+
+        if (callType === 'video') {
+            // Trigger video call automatically
+            document.getElementById('start-video-call').click();
+        } else if (callType === 'voice') {
+            // Trigger voice call automatically
+            document.getElementById('start-voice-call').click();
+        }
+    });
+
+    // Define what happens when call links are clicked
+    document.getElementById('start-video-call').addEventListener('click', function(e) {
+        e.preventDefault();
+        alert("Starting Video Call..."); // Replace with actual call logic
+    });
+
+    document.getElementById('start-voice-call').addEventListener('click', function(e) {
+        e.preventDefault();
+        alert("Starting Voice Call..."); // Replace with actual call logic
+    });
+
+
+
+
+
+
+
+
             
             // AI Responses
             const aiResponses = [

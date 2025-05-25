@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentiCare - Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #5d78ff;
+            --secondary-color: #6c5ce7;
+            --text-color: #2d3436;
+            --light-color: #f5f6fa;
+            --white: #ffffff;
+            --error-color: #ff7675;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--light-color), var(--white));
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-color);
+        }
+        
+        .signup-container {
+            width: 400px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .signup-header {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .signup-header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .signup-header p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .therapy-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .signup-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(93, 120, 255, 0.2);
+        }
+        
+        .name-fields {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .name-fields .form-group {
+            flex: 1;
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: #eee;
+            margin-top: 8px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0%;
+            background: var(--error-color);
+            transition: all 0.3s;
+        }
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .terms input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .terms a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .signup-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group.error input {
+            border-color: var(--error-color);
+        }
+        
+        .form-group.error .error-message {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <div class="therapy-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h1>Join SentiCare</h1>
+            <p>Begin your healing journey today</p>
+        </div>
+        
+        <div class="signup-form">
+            <div class="name-fields">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" placeholder="Enter your first name">
+                    <div class="error-message">Please enter your first name</div>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" placeholder="Enter your last name">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email">
+                <div class="error-message">Please enter a valid email</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Create Password</label>
+                <input type="password" id="password" placeholder="Create a password">
+                <div class="password-strength">
+                    <div class="strength-meter" id="strength-meter"></div>
+                </div>
+                <div class="error-message">Password must be at least 8 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="user-type">I'm joining as a</label>
+                <select id="user-type">
+                    <option value="">Select account type</option>
+                    <option value="patient">Patient seeking support</option>
+                    <option value="professional">Mental health professional</option>
+                    <option value="researcher">Researcher</option>
+                </select>
+                <div class="error-message">Please select an account type</div>
+            </div>
+            
+            <div class="terms">
+                <input type="checkbox" id="agree-terms">
+                <label for="agree-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+            </div>
+            
+            <button class="signup-btn">Create Account</button>
+            
+            <div class="login-link">
+                Already have an account? <a href="login.html">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthMeter = document.getElementById('strength-meter');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+            if (password.match(/[0-9]/)) strength += 1;
+            if (password.match(/[^a-zA-Z0-9]/)) strength += 1;
+            
+            const width = strength * 25;
+            strengthMeter.style.width = width + '%';
+            
+            if (strength < 2) {
+                strengthMeter.style.background = 'var(--error-color)';
+            } else if (strength < 4) {
+                strengthMeter.style.background = '#fdcb6e';
+            } else {
+                strengthMeter.style.background = '#00b894';
+            }
+        });
+        
+        // Form validation
+        document.querySelector('.signup-btn').addEventListener('click', function() {
+            let isValid = true;
+            
+            // Validate first name
+            const firstName = document.getElementById('first-name');
+            if (!firstName.value.trim()) {
+                firstName.parentElement.classList.add('error');
+                isValid = false;
+            } else {
+                firstName.parentElement.classList.remove('error');
+            }
+            
+            // Validate email
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                email.parentElement.classList.add('error');
+                isValid = false;
+            } else {
+                email.parentElement.classList.remove('error');
+            }
+            
+            // Validate password
+            const password = document.getElementById('password');
+            if (password.value.length < 8) {
+                password.parentElement.classList.add('error');
+                isValid = false;
+            } else {
+                password.parentElement.classList.remove('error');
+            }
+            
+            // Validate user type
+            const userType = document.getElementById('user-type');
+            if (!userType.value) {
+                userType.parentElement.classList.add('error');
+                isValid = false;
+            } else {
+                userType.parentElement.classList.remove('error');
+            }
+            
+            // Validate terms checkbox
+            const terms = document.getElementById('agree-terms');
+            if (!terms.checked) {
+                alert('Please agree to the Terms of Service and Privacy Policy');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                alert('Account created successfully! Redirecting to dashboard...');
+                // Here you would typically submit the form to your backend
+            }
+        });
+    </script>
+</body>
+</html>
