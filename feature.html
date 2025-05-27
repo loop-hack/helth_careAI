@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindEase - AI Therapy Companion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5e81f4;
+            --primary-light: #e5e9fa;
+            --secondary: #1cb0a8;
+            --danger: #ff5b5b;
+            --dark: #1a1d28;
+            --light: #f8f9fa;
+            --gray: #7d7d7d;
+            --gray-light: #e9ecef;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .nav-item:hover:not(.active) {
+            background-color: var(--gray-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-weight: 500;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--gray-light);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            color: var(--dark);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 10px 15px;
+            border-radius: var(--radius);
+            width: 300px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            flex: 1;
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+
+        .search-bar i {
+            color: var(--gray);
+            margin-right: 10px;
+        }
+
+        /* Therapy Container */
+        .therapy-container {
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 120px);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .therapist-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .therapist-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .therapist-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .chat-status {
+            margin-left: auto;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f5f7fb;
+        }
+
+        .message {
+            max-width: 70%;
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message {
+            background: white;
+            border-bottom-left-radius: 5px;
+            margin-right: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .user-message {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .user-message .message-time {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            background: white;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid var(--gray-light);
+            border-radius: 24px;
+            padding: 12px 20px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .send-button:hover {
+            background: #4a72e0;
+        }
+
+        /* Call Container */
+        .call-container {
+            width: 350px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .call-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .call-header h3 {
+            margin-bottom: 5px;
+        }
+
+        .call-header p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .call-preview {
+            flex: 1;
+            background: var(--dark);
+            position: relative;
+        }
+
+        #remoteVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #localVideo {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 150px;
+            border-radius: 8px;
+            border: 2px solid white;
+            box-shadow: var(--shadow);
+            object-fit: cover;
+        }
+
+        .call-controls {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .control-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gray-light);
+            border: none;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-button:hover {
+            transform: scale(1.05);
+        }
+
+        .control-button.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .control-button.danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .call-actions {
+            padding: 15px;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .action-button {
+            width: 100%;
+            padding: 12px;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-button i {
+            margin-right: 8px;
+        }
+
+        .action-button:hover {
+            background: #d8def7;
+        }
+
+        /* Mood Tracker */
+        .mood-tracker {
+            margin-top: 20px;
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .mood-tracker h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .mood-tracker h3 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .mood-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .mood-option:hover {
+            background: var(--gray-light);
+        }
+
+        .mood-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .mood-option.active .mood-icon {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .mood-name {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .therapy-container {
+                flex-direction: column;
+            }
+            .call-container {
+                width: 100%;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px 10px;
+            }
+            .logo h1, .nav-item span, .user-name {
+                display: none;
+            }
+            .logo {
+                justify-content: center;
+            }
+            .nav-item {
+                justify-content: center;
+                padding: 15px 0;
+            }
+            .nav-item i {
+                margin-right: 0;
+            }
+            .user-avatar {
+                margin-right: 0;
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .search-bar {
+                width: 100%;
+                margin-top: 15px;
+            }
+        }
+
+        /* Animation for typing indicator */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 18px;
+            width: fit-content;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gray);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+
+        /* Legal section styles */
+.legal-section {
+    position: relative;
+    cursor: pointer;
+}
+
+.legal-submenu {
+    display: none;
+    padding-left: 20px;
+}
+
+/* Footer styles */
+.main-footer {
+    background-color: #1a1d28;
+    color: white;
+    padding: 40px 0;
+}
+
+/* Cookie banner styles */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #2d3246;
+    color: white;
+    padding: 15px 20px;
+    z-index: 1000;
+}
+
+/* Legal page styles */
+.legal-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>MindEase</h1>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Therapy Chat</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-video"></i>
+                    <span>Video Sessions</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Appointments</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-book"></i>
+                    <span>Resources</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+
+                <div class="nav-item legal-section">
+        <i class="fas fa-balance-scale"></i>
+        <span>Legal</span>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    
+    <div class="legal-submenu">
+        <div class="nav-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Privacy Policy</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-file-contract"></i>
+            <span>Terms of Service</span>
+        </div>
+    </div>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <div class="user-name">John Doe</div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="header">
+                <h2>AI Therapy Companion</h2>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search therapy topics...">
+                </div>
+            </div>
+            
+            <div class="therapy-container">
+                <!-- Chat Interface -->
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="therapist-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="therapist-info">
+                            <h3>Dr. Serenity</h3>
+                            <p>AI Therapy Assistant</p>
+                        </div>
+                        <div class="chat-status">
+                            <i class="fas fa-circle"></i> Online
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            Hello! I'm Dr. Serenity, your AI therapy companion. How are you feeling today?
+                            <div class="message-time">Today, 10:02 AM</div>
+                        </div>
+                        
+                        <div class="message user-message">
+                            I've been feeling a bit anxious lately with work pressures.
+                            <div class="message-time">Today, 10:03 AM</div>
+                        </div>
+                        
+                        <div class="message ai-message">
+                            I understand. Work stress can be overwhelming. Would you like to talk more about what specifically is causing this anxiety?
+                            <div class="message-time">Today, 10:03 AM</div>
+                        </div>
+                        
+                        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                        <button class="send-button" id="sendButton">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Video Call Interface -->
+                <div class="call-container">
+                    <div class="call-header">
+                        <h3>Video Therapy Session</h3>
+                        <p>Connect with your AI therapist face-to-face</p>
+                    </div>
+                    
+                    <div class="call-preview">
+                        <video id="remoteVideo" autoplay playsinline></video>
+                        <video id="localVideo" autoplay playsinline muted></video>
+                    </div>
+                    
+                    <div class="call-controls">
+                        <button class="control-button" id="muteButton">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="control-button" id="videoButton">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="control-button primary" id="startCallButton">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="control-button danger" id="endCallButton" style="display: none;">
+                            <i class="fas fa-phone-slash"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="call-actions">
+                        <button class="action-button" id="voiceOnlyButton">
+                            <i class="fas fa-phone-alt"></i> Voice Only
+                        </button>
+                    </div>
+                    
+                    <!-- Mood Tracker -->
+                    <div class="mood-tracker">
+                        <h3><i class="fas fa-smile"></i> How are you feeling now?</h3>
+                        <div class="mood-options">
+                            <div class="mood-option" data-mood="awful">
+                                <div class="mood-icon">
+                                    <i class="fas fa-sad-tear"></i>
+                                </div>
+                                <span class="mood-name">Awful</span>
+                            </div>
+                            <div class="mood-option" data-mood="bad">
+                                <div class="mood-icon">
+                                    <i class="fas fa-frown"></i>
+                                </div>
+                                <span class="mood-name">Bad</span>
+                            </div>
+                            <div class="mood-option" data-mood="neutral">
+                                <div class="mood-icon">
+                                    <i class="fas fa-meh"></i>
+                                </div>
+                                <span class="mood-name">Okay</span>
+                            </div>
+                            <div class="mood-option" data-mood="good">
+                                <div class="mood-icon">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <span class="mood-name">Good</span>
+                            </div>
+                            <div class="mood-option active" data-mood="great">
+                                <div class="mood-icon">
+                                    <i class="fas fa-laugh"></i>
+                                </div>
+                                <span class="mood-name">Great</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const typingIndicator = document.getElementById('typingIndicator');
+            const startCallButton = document.getElementById('startCallButton');
+            const endCallButton = document.getElementById('endCallButton');
+            const muteButton = document.getElementById('muteButton');
+            const videoButton = document.getElementById('videoButton');
+            const voiceOnlyButton = document.getElementById('voiceOnlyButton');
+            const localVideo = document.getElementById('localVideo');
+            const remoteVideo = document.getElementById('remoteVideo');
+            const moodOptions = document.querySelectorAll('.mood-option');
+            
+            // State variables
+            let localStream;
+            let callActive = false;
+            let isMuted = false;
+            let isVideoOff = false;
+            let currentMood = 'great';
+            
+            // Initialize the app
+            init();
+            
+            function init() {
+                setupEventListeners();
+                setupMoodTracker();
+            }
+            
+            function setupEventListeners() {
+                // Chat functionality
+                sendButton.addEventListener('click', sendMessage);
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+                
+                // Call functionality
+                startCallButton.addEventListener('click', startVideoCall);
+                endCallButton.addEventListener('click', endCall);
+                muteButton.addEventListener('click', toggleMute);
+                videoButton.addEventListener('click', toggleVideo);
+                voiceOnlyButton.addEventListener('click', startVoiceCall);
+            }
+            
+            function setupMoodTracker() {
+                moodOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        moodOptions.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                        currentMood = this.dataset.mood;
+                        addAIMessage(`I see you're feeling ${currentMood}. Would you like to talk about what's affecting your mood?`);
+                    });
+                });
+            }
+            
+            // Chat Functions
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addUserMessage(message);
+                    chatInput.value = '';
+                    
+                    // Show typing indicator
+                    typingIndicator.style.display = 'flex';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Simulate AI response after a delay
+                    setTimeout(() => {
+                        typingIndicator.style.display = 'none';
+                        const response = generateAIResponse(message);
+                        addAIMessage(response);
+                    }, 1500);
+                }
+            }
+            
+            function addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message user-message';
+                
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                messageDiv.innerHTML = `${text}<div class="message-time">Today, ${time}</div>`;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function addAIMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message ai-message';
+                
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                messageDiv.innerHTML = `${text}<div class="message-time">Today, ${time}</div>`;
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            function generateAIResponse(message) {
+                const lowerMsg = message.toLowerCase();
+                
+                // Mood-specific responses
+                if (currentMood === 'awful' || currentMood === 'bad') {
+                    if (lowerMsg.includes('anxious') || lowerMsg.includes('stress')) {
+                        return "I hear that you're feeling stressed. Let's try some deep breathing exercises together. Breathe in for 4 seconds, hold for 4, and exhale for 6. Would you like to try this with me?";
+                    } else if (lowerMsg.includes('sad') || lowerMsg.includes('depressed')) {
+                        return "I'm sorry you're feeling this way. Remember that what you're experiencing is valid and temporary. Would it help to talk about what's making you feel this way?";
+                    }
+                }
+                
+                // General responses
+                if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
+                    return "Hello again! How has your day been since we last spoke?";
+                } else if (lowerMsg.includes('help')) {
+                    return "I'm here to help you work through your thoughts and feelings. Can you tell me more about what's troubling you?";
+                } else if (lowerMsg.includes('thank')) {
+                    return "You're very welcome. Remember I'm here whenever you need support.";
+                } else if (lowerMsg.includes('exercise') || lowerMsg.includes('technique')) {
+                    return "That's a great idea. Would you like to try a mindfulness exercise or perhaps some cognitive behavioral techniques?";
+                } else if (lowerMsg.includes('sleep')) {
+                    return "Sleep issues can significantly impact our mental health. Let's discuss your bedtime routine. What time do you usually go to bed?";
+                } else if (lowerMsg.includes('work') || lowerMsg.includes('job')) {
+                    return "Work-related stress is very common. Would it help to talk about specific situations at work that are causing you distress?";
+                } else if (lowerMsg.includes('family') || lowerMsg.includes('friend')) {
+                    return "Relationships can be complex. Would you like to explore how these relationships are affecting your wellbeing?";
+                }
+                
+                // Default responses based on mood
+                const defaultResponses = {
+                    awful: "I can see you're really struggling. Let's focus on one small thing that might help you feel even slightly better.",
+                    bad: "It's okay to not be okay. What's one thing that usually brings you comfort, even if just a little?",
+                    neutral: "Let's explore what might help improve your mood. What activities have you enjoyed in the past?",
+                    good: "I'm glad you're feeling okay. What's contributing to this positive feeling today?",
+                    great: "It's wonderful that you're feeling great! What's been working well for you recently?"
+                };
+                
+                return defaultResponses[currentMood] || "I appreciate you sharing that with me. Can you tell me more about how this makes you feel?";
+            }
+            
+            // Video Call Functions
+            async function startVideoCall() {
+                try {
+                    // Get user media
+                    localStream = await navigator.mediaDevices.getUserMedia({
+                        audio: true,
+                        video: true
+                    });
+                    
+                    // Display local video
+                    localVideo.srcObject = localStream;
+                    
+                    // Simulate AI answering the call
+                    startCallButton.style.display = 'none';
+                    endCallButton.style.display = 'flex';
+                    callActive = true;
+                    
+                    // Simulate AI video (in a real app, this would be WebRTC)
+                    remoteVideo.src = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4";
+                    remoteVideo.loop = true;
+                    
+                    // Add call notification to chat
+                    addAIMessage("I've started our video therapy session. We can continue our conversation here or via video.");
+                    
+                } catch (error) {
+                    console.error('Error starting call:', error);
+                    alert('Could not access camera or microphone. Please check permissions.');
+                }
+            }
+            
+            async function startVoiceCall() {
+                try {
+                    // Get user media (audio only)
+                    localStream = await navigator.mediaDevices.getUserMedia({
+                        audio: true,
+                        video: false
+                    });
+                    
+                    // Hide local video
+                    localVideo.style.display = 'none';
+                    
+                    // Simulate AI answering the call
+                    startCallButton.style.display = 'none';
+                    endCallButton.style.display = 'flex';
+                    callActive = true;
+                    
+                    // Show static image for voice call
+                    remoteVideo.src = "";
+                    remoteVideo.poster = "https://via.placeholder.com/400x600/1a1d28/FFFFFF?text=Voice+Therapy";
+                    
+                    // Add call notification to chat
+                    addAIMessage("I've started our voice therapy session. We can continue our conversation here or via voice.");
+                    
+                } catch (error) {
+                    console.error('Error starting call:', error);
+                    alert('Could not access microphone. Please check permissions.');
+                }
+            }
+            
+            function endCall() {
+                // Stop all media streams
+                if (localStream) {
+                    localStream.getTracks().forEach(track => track.stop());
+                }
+                
+                // Reset UI
+                startCallButton.style.display = 'flex';
+                endCallButton.style.display = 'none';
+                localVideo.srcObject = null;
+                remoteVideo.src = "";
+                remoteVideo.poster = "";
+                localVideo.style.display = 'block';
+                callActive = false;
+                isMuted = false;
+                isVideoOff = false;
+                muteButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                videoButton.innerHTML = '<i class="fas fa-video"></i>';
+                
+                // Add call ended notification to chat
+                addAIMessage("Our call has ended. How was that experience for you?");
+            }
+            
+            function toggleMute() {
+                if (localStream) {
+                    const audioTracks = localStream.getAudioTracks();
+                    if (audioTracks.length > 0) {
+                        isMuted = !isMuted;
+                        audioTracks[0].enabled = !isMuted;
+                        muteButton.innerHTML = isMuted 
+                            ? '<i class="fas fa-microphone-slash"></i>' 
+                            : '<i class="fas fa-microphone"></i>';
+                    }
+                }
+            }
+            
+            function toggleVideo() {
+                if (localStream) {
+                    const videoTracks = localStream.getVideoTracks();
+                    if (videoTracks.length > 0) {
+                        isVideoOff = !isVideoOff;
+                        videoTracks[0].enabled = !isVideoOff;
+                        videoButton.innerHTML = isVideoOff 
+                            ? '<i class="fas fa-video-slash"></i>' 
+                            : '<i class="fas fa-video"></i>';
+                    }
+                }
+            }
+        });
+
+        // Legal menu toggle
+document.querySelector('.legal-section').addEventListener('click', function() {
+    this.classList.toggle('active');
+    document.querySelector('.legal-submenu').style.display = 
+        this.classList.contains('active') ? 'block' : 'none';
+});
+
+// Cookie consent functions
+function setupCookieConsent() {
+    const consentGiven = localStorage.getItem('cookieConsent');
+    if (!consentGiven) {
+        document.getElementById('cookieConsentBanner').style.display = 'block';
+    }
+    
+    // Setup button event listeners...
+}
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', function() {
+    setupCookieConsent();
+});
+    </script>
+</body>
+</html>
