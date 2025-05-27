@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentiCare - Video Therapy Session</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #1e293b;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #4a6bff;
+            z-index: 10;
+        }
+
+        .video-container {
+            flex: 1;
+            position: relative;
+            background-color: #e0e7ff;
+        }
+
+        .remote-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #1e293b;
+        }
+
+        .local-video {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            bottom: 100px;
+            right: 20px;
+            border-radius: 8px;
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: #f0f4ff;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .local-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ai-avatar {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            bottom: 100px;
+            right: 20px;
+            border-radius: 8px;
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: #f0f4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #4a6bff;
+            z-index: 1;
+        }
+
+        .call-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .caller-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .call-status {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .call-timer {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .control-btn i {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .end-call {
+            background-color: #ff3b30;
+            width: 60px;
+            height: 60px;
+        }
+
+        .end-call i {
+            color: white;
+        }
+
+        .active {
+            background-color: #4a6bff;
+        }
+
+        .active i {
+            color: white;
+        }
+
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0e7ff;
+            border-top-color: #4a6bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #64748b;
+        }
+
+        /* WhatsApp-style icons */
+        .icon-video-on:before { content: "📹"; }
+        .icon-video-off:before { content: "📷"; }
+        .icon-mic-on:before { content: "🎤"; }
+        .icon-mic-off:before { content: "🎤\FE0E"; opacity: 0.7; }
+        .icon-speaker-on:before { content: "🔊"; }
+        .icon-speaker-off:before { content: "🔈"; }
+        .icon-end-call:before { content: "📞"; transform: rotate(135deg); display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading" id="loadingScreen">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Starting video session...</div>
+        </div>
+
+        <div class="logo">SentiCare</div>
+        
+        <div class="video-container">
+            <video class="remote-video" id="remoteVideo" autoplay playsinline></video>
+            <div class="ai-avatar" id="aiAvatar">👩⚕️</div>
+            <div class="local-video">
+                <video id="localVideo" autoplay playsinline muted></video>
+            </div>
+            
+            <div class="call-info">
+                <div class="caller-name">AI Therapist</div>
+                <div class="call-status" id="callStatus">Video session in progress</div>
+                <div class="call-timer" id="callTimer">00:00</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" id="videoBtn">
+                <i class="icon-video-on"></i>
+            </button>
+            <button class="control-btn" id="muteBtn">
+                <i class="icon-mic-on"></i>
+            </button>
+            <button class="control-btn" id="speakerBtn">
+                <i class="icon-speaker-on"></i>
+            </button>
+            <button class="control-btn end-call" id="endCallBtn">
+                <i class="icon-end-call"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loadingScreen = document.getElementById('loadingScreen');
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        const aiAvatar = document.getElementById('aiAvatar');
+        const callStatus = document.getElementById('callStatus');
+        const callTimer = document.getElementById('callTimer');
+        const videoBtn = document.getElementById('videoBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const speakerBtn = document.getElementById('speakerBtn');
+        const endCallBtn = document.getElementById('endCallBtn');
+
+        // Call state
+        let callActive = false;
+        let callStartTime;
+        let timerInterval;
+        let isMuted = false;
+        let isVideoOn = true;
+        let isSpeakerOn = false;
+        let localStream;
+        let remoteStream;
+
+        // Initialize
+        async function init() {
+            try {
+                // Get user media
+                localStream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: true
+                });
+                
+                // Set up local video
+                localVideo.srcObject = localStream;
+                
+                // Simulate remote stream (in real app, this would be actual remote stream)
+                simulateRemoteStream();
+                
+                // Hide loading screen after 1.5s
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    startCall();
+                }, 1500);
+                
+            } catch (err) {
+                console.error("Error accessing media devices:", err);
+                callStatus.textContent = "Could not access camera/microphone";
+                loadingScreen.querySelector('.loading-text').textContent = "Could not start video session";
+            }
+        }
+
+        function simulateRemoteStream() {
+            // In a real app, this would be the actual remote stream
+            // For demo, we'll use a placeholder with periodic AI responses
+            aiAvatar.style.display = 'flex';
+            
+            // Simulate AI responses every 10-15 seconds
+            setInterval(() => {
+                if (callActive) {
+                    const responses = [
+                        "I notice you seem a bit tense. Would you like to talk about what's bothering you?",
+                        "That's very understandable. How does that make you feel?",
+                        "I'm here to listen. Take your time.",
+                        "Many people feel that way. You're not alone in this.",
+                        "Would you like to try a breathing exercise together?"
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    speak(randomResponse);
+                }
+            }, 15000);
+        }
+
+        function startCall() {
+            callActive = true;
+            callStartTime = new Date();
+            startTimer();
+            
+            // Set up event listeners
+            videoBtn.addEventListener('click', toggleVideo);
+            muteBtn.addEventListener('click', toggleMute);
+            speakerBtn.addEventListener('click', toggleSpeaker);
+            endCallBtn.addEventListener('click', endCall);
+            
+            // AI greeting
+            setTimeout(() => {
+                speak("Hello! I can see you now. I'm here to listen and help. How are you feeling today?");
+            }, 1000);
+        }
+
+        function toggleVideo() {
+            isVideoOn = !isVideoOn;
+            if (isVideoOn) {
+                localStream.getVideoTracks().forEach(track => track.enabled = true);
+                videoBtn.innerHTML = '<i class="icon-video-on"></i>';
+                videoBtn.classList.remove('active');
+            } else {
+                localStream.getVideoTracks().forEach(track => track.enabled = false);
+                videoBtn.innerHTML = '<i class="icon-video-off"></i>';
+                videoBtn.classList.add('active');
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            if (isMuted) {
+                localStream.getAudioTracks().forEach(track => track.enabled = false);
+                muteBtn.innerHTML = '<i class="icon-mic-off"></i>';
+                muteBtn.classList.add('active');
+                callStatus.textContent = "You are muted";
+            } else {
+                localStream.getAudioTracks().forEach(track => track.enabled = true);
+                muteBtn.innerHTML = '<i class="icon-mic-on"></i>';
+                muteBtn.classList.remove('active');
+                callStatus.textContent = "Video session in progress";
+            }
+        }
+
+        function toggleSpeaker() {
+            isSpeakerOn = !isSpeakerOn;
+            if (isSpeakerOn) {
+                remoteVideo.volume = 1;
+                speakerBtn.innerHTML = '<i class="icon-speaker-on"></i>';
+                speakerBtn.classList.add('active');
+            } else {
+                remoteVideo.volume = 0;
+                speakerBtn.innerHTML = '<i class="icon-speaker-off"></i>';
+                speakerBtn.classList.remove('active');
+            }
+        }
+
+        function endCall() {
+            callActive = false;
+            clearInterval(timerInterval);
+            
+            // Stop all tracks
+            localStream.getTracks().forEach(track => track.stop());
+            
+            // Show call ended screen
+            document.body.innerHTML = `
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background-color:#f5f7fa; color:#1e293b;">
+                    <h1 style="margin-bottom:20px;">Session Ended</h1>
+                    <p style="margin-bottom:30px; color:#64748b;" id="finalTimer"></p>
+                    <div style="background-color:#e0e7ff; width:120px; height:120px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:30px; font-size:40px; color:#4a6bff;">👋</div>
+                    <p style="margin-bottom:40px; color:#64748b; max-width:300px; text-align:center;">Remember to practice self-care. You can start a new session anytime.</p>
+                    <button onclick="window.location.reload()" style="padding:12px 30px; background:#4a6bff; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer;">New Session</button>
+                </div>
+            `;
+            
+            // Display final call duration
+            const finalDuration = Math.floor((new Date() - callStartTime) / 1000);
+            const minutes = Math.floor(finalDuration / 60).toString().padStart(2, '0');
+            const seconds = (finalDuration % 60).toString().padStart(2, '0');
+            document.getElementById('finalTimer').textContent = `Duration: ${minutes}:${seconds}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const duration = Math.floor((now - callStartTime) / 1000);
+            const minutes = Math.floor(duration / 60).toString().padStart(2, '0');
+            const seconds = (duration % 60).toString().padStart(2, '0');
+            callTimer.textContent = `${minutes}:${seconds}`;
+        }
+
+        function speak(text) {
+            if (!callActive) return;
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            
+            // Try to find a pleasant female voice
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.name.includes('Google UK English Female')) || 
+                                 voices.find(v => v.name.includes('Samantha')) || 
+                                 voices[0];
+            
+            if (preferredVoice) utterance.voice = preferredVoice;
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Initialize when voices are loaded
+        window.speechSynthesis.onvoiceschanged = function() {
+            if (speechSynthesis.getVoices().length > 0) {
+                init();
+            }
+        };
+
+        // Fallback if voices are already loaded
+        if (speechSynthesis.getVoices().length > 0) {
+            init();
+        }
+    </script>
+</body>
+</html> 
