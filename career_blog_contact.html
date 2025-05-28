@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindMend AI - Careers, Blog & Contact</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .section {
+      scroll-margin-top: 100px;
+    }
+    .nav-link {
+      transition: all 0.3s ease;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: #6366f1;
+      transform: translateY(-2px);
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .contact-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex-shrink-0">
+          <a href="#" class="text-indigo-600 font-bold text-xl">MindMend AI</a>
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#careers" class="nav-link text-gray-700">Careers</a>
+          <a href="#blog" class="nav-link text-gray-700">Blog</a>
+          <a href="#contact" class="nav-link text-gray-700">Contact</a>
+          <a href="/" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Home</a>
+        </div>
+        <div class="md:hidden">
+          <button class="mobile-menu-button p-2 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu hidden md:hidden bg-white shadow-lg">
+      <a href="#careers" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Careers</a>
+      <a href="#blog" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Blog</a>
+      <a href="#contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Contact</a>
+      <a href="/" class="block px-4 py-2 bg-indigo-600 text-white">Home</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-20">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-6">Join Our Mission to Transform Mental Health</h1>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-8">Explore careers, read our latest insights, or get in touch with our team.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#careers" class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100">View Openings</a>
+        <a href="#contact" class="bg-transparent border-2 border-white px-6 py-3 rounded-md font-medium hover:bg-white hover:text-indigo-600">Contact Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Careers Section -->
+  <section id="careers" class="section py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Careers at MindMend AI</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Join our team of innovators working at the intersection of AI and mental health.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <!-- Job Opening 1 -->
+        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-semibold text-indigo-600 mb-2">AI Psychologist Researcher</h3>
+          <div class="flex items-center text-gray-500 mb-4">
+            <span class="mr-4"><i class="fas fa-map-marker-alt mr-2"></i>Remote</span>
+            <span><i class="fas fa-briefcase mr-2"></i>Full-time</span>
+          </div>
+          <p class="text-gray-700 mb-4">We're looking for a psychologist with experience in AI to help train our models with evidence-based therapeutic approaches.</p>
+          <a href="#" class="text-indigo-600 font-medium hover:underline">View Details</a>
+        </div>
+        
+        <!-- Job Opening 2 -->
+        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-semibold text-indigo-600 mb-2">Frontend Developer</h3>
+          <div class="flex items-center text-gray-500 mb-4">
+            <span class="mr-4"><i class="fas fa-map-marker-alt mr-2"></i>San Francisco/Remote</span>
+            <span><i class="fas fa-briefcase mr-2"></i>Full-time</span>
+          </div>
+          <p class="text-gray-700 mb-4">Help build beautiful, accessible interfaces for our therapy platform using modern JavaScript frameworks.</p>
+          <a href="#" class="text-indigo-600 font-medium hover:underline">View Details</a>
+        </div>
+        
+        <!-- Job Opening 3 -->
+        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-semibold text-indigo-600 mb-2">UX Designer</h3>
+          <div class="flex items-center text-gray-500 mb-4">
+            <span class="mr-4"><i class="fas fa-map-marker-alt mr-2"></i>Remote</span>
+            <span><i class="fas fa-briefcase mr-2"></i>Contract</span>
+          </div>
+          <p class="text-gray-700 mb-4">Design compassionate user experiences for people seeking mental health support through our platform.</p>
+          <a href="#" class="text-indigo-600 font-medium hover:underline">View Details</a>
+        </div>
+        
+        <!-- Job Opening 4 -->
+        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+          <h3 class="text-xl font-semibold text-indigo-600 mb-2">Machine Learning Engineer</h3>
+          <div class="flex items-center text-gray-500 mb-4">
+            <span class="mr-4"><i class="fas fa-map-marker-alt mr-2"></i>New York/Remote</span>
+            <span><i class="fas fa-briefcase mr-2"></i>Full-time</span>
+          </div>
+          <p class="text-gray-700 mb-4">Develop and optimize our NLP models to better understand and respond to users' emotional states.</p>
+          <a href="#" class="text-indigo-600 font-medium hover:underline">View Details</a>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <p class="text-gray-600 mb-6">Don't see your perfect role? We're always looking for talented people.</p>
+        <a href="#contact" class="bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 inline-block">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Section -->
+  <section id="blog" class="section py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Latest From Our Blog</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Insights on AI, mental health, and the future of therapy.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Blog Post 1 -->
+        <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300">
+          <img src="https://source.unsplash.com/random/600x400/?ai,therapy" alt="AI Therapy" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <div class="flex items-center text-sm text-gray-500 mb-2">
+              <span>June 15, 2023</span>
+              <span class="mx-2">•</span>
+              <span>5 min read</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">How AI is Transforming Mental Health Care</h3>
+            <p class="text-gray-600 mb-4">Exploring the potential of AI to make therapy more accessible and effective for millions worldwide.</p>
+            <a href="#" class="text-indigo-600 font-medium hover:underline">Read More</a>
+          </div>
+        </article>
+        
+        <!-- Blog Post 2 -->
+        <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300">
+          <img src="https://source.unsplash.com/random/600x400/?technology,mentalhealth" alt="Tech and Mental Health" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <div class="flex items-center text-sm text-gray-500 mb-2">
+              <span>May 28, 2023</span>
+              <span class="mx-2">•</span>
+              <span>4 min read</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Ethical Considerations in AI Therapy</h3>
+            <p class="text-gray-600 mb-4">How we're addressing privacy, bias, and ethical concerns in our AI therapy platform.</p>
+            <a href="#" class="text-indigo-600 font-medium hover:underline">Read More</a>
+          </div>
+        </article>
+        
+        <!-- Blog Post 3 -->
+        <article class="blog-card bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300">
+          <img src="https://source.unsplash.com/random/600x400/?counseling,digital" alt="Digital Counseling" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <div class="flex items-center text-sm text-gray-500 mb-2">
+              <span>April 10, 2023</span>
+              <span class="mx-2">•</span>
+              <span>7 min read</span>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">The Science Behind Our AI's Empathy</h3>
+            <p class="text-gray-600 mb-4">How we've trained our models to recognize and respond to human emotions with genuine care.</p>
+            <a href="#" class="text-indigo-600 font-medium hover:underline">Read More</a>
+          </div>
+        </article>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="#" class="border-2 border-indigo-600 text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-indigo-600 hover:text-white inline-block">View All Posts</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Get In Touch</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">We'd love to hear from you - whether you have questions or just want to say hello.</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-12">
+        <div>
+          <form class="space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input type="text" id="name" name="name" class="contact-input w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input type="email" id="email" name="email" class="contact-input w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            
+            <div>
+              <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+              <select id="subject" name="subject" class="contact-input w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="">Select a topic</option>
+                <option value="general">General Inquiry</option>
+                <option value="support">Technical Support</option>
+                <option value="careers">Careers</option>
+                <option value="press">Press/Media</option>
+                <option value="partnership">Partnership Opportunities</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <textarea id="message" name="message" rows="5" class="contact-input w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+            
+            <div>
+              <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-md font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Send Message</button>
+            </div>
+          </form>
+        </div>
+        
+        <div>
+          <div class="bg-gray-50 p-8 rounded-lg h-full">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800">Contact Information</h3>
+            
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-full">
+                  <i class="fas fa-map-marker-alt text-indigo-600"></i>
+                </div>
+                <div class="ml-4">
+                  <h4 class="text-sm font-medium text-gray-500">Address</h4>
+                  <p class="text-gray-700">123 AI Therapy Lane<br>San Francisco, CA 94107</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-full">
+                  <i class="fas fa-envelope text-indigo-600"></i>
+                </div>
+                <div class="ml-4">
+                  <h4 class="text-sm font-medium text-gray-500">Email</h4>
+                  <p class="text-gray-700">hello@mindmend.ai<br>support@mindmend.ai</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-full">
+                  <i class="fas fa-phone-alt text-indigo-600"></i>
+                </div>
+                <div class="ml-4">
+                  <h4 class="text-sm font-medium text-gray-500">Phone</h4>
+                  <p class="text-gray-700">+1 (555) 123-4567<br>Mon-Fri, 9am-5pm PST</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="flex-shrink-0 bg-indigo-100 p-3 rounded-full">
+                  <i class="fas fa-share-alt text-indigo-600"></i>
+                </div>
+                <div class="ml-4">
+                  <h4 class="text-sm font-medium text-gray-500">Social Media</h4>
+                  <div class="flex space-x-4 mt-2">
+                    <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-twitter text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-linkedin text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-facebook text-xl"></i></a>
+                    <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-instagram text-xl"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-4">MindMend AI</h3>
+          <p class="text-gray-400">Revolutionizing mental health care through compassionate AI technology.</p>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="#careers" class="text-gray-400 hover:text-white">Careers</a></li>
+            <li><a href="#blog" class="text-gray-400 hover:text-white">Blog</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Legal</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white">HIPAA Compliance</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Subscribe</h3>
+          <p class="text-gray-400 mb-4">Get the latest updates and mental health tips.</p>
+          <form class="flex">
+            <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-md focus:outline-none text-gray-800">
+            <button type="submit" class="bg-indigo-600 px-4 py-2 rounded-r-md hover:bg-indigo-700"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
+        <p>© 2023 MindMend AI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+      document.querySelector('.mobile-menu').classList.toggle('hidden');
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+        
+        // Close mobile menu if open
+        document.querySelector('.mobile-menu').classList.add('hidden');
+      });
+    });
+    
+    // Highlight active nav link on scroll
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('.section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - 150)) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

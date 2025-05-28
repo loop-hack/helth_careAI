@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - MindMend AI Therapy</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <style>
+    .feature-box:hover {
+      transform: scale(1.03);
+      transition: transform 0.3s ease-in-out;
+    }
+    .swiper {
+      width: 100%;
+      height: 100%;
+      margin: 20px 0;
+    }
+    .swiper-slide {
+      height: auto; /* Make slides height flexible */
+      padding: 0 10px; /* Add some spacing between slides */
+    }
+    .swiper-pagination-bullet {
+      background: #6366f1 !important; /* Indigo color */
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Background video -->
+  <video autoplay loop muted class="fixed w-full h-full object-cover opacity-20 z-0">
+    <source src="ai-therapy-loop.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Content wrapper -->
+  <div class="relative z-10 p-6 md:p-12 max-w-6xl mx-auto space-y-16">
+
+    <!-- Heading and intro -->
+    <div class="space-y-6 text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-600">Your Journey to Wellness Starts Here</h1>
+      <p class="text-lg md:text-xl max-w-3xl mx-auto">
+        MindMend AI isn't just a digital assistant. It's a revolutionary step in emotional support. We bridge the gap between technology and compassion, bringing the future of therapy directly to your fingertips.
+      </p>
+      <img src="ai_image.png" alt="AI Counseling Illustration" class="mx-auto w-full max-w-xl rounded-xl shadow-xl">
+    </div>
+
+    <!-- Features Slider -->
+    <div class="px-4">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <!-- Slide 1 -->
+          <div class="swiper-slide">
+            <div class="feature-box bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 h-full">
+              <h3 class="text-2xl font-semibold mb-3">🌐 Always On</h3>
+              <p>Your mental health doesn't follow a 9-to-5 schedule. MindMend AI is available 24/7, globally accessible, and always ready to help via chat, voice, or video.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 2 -->
+          <div class="swiper-slide">
+            <div class="feature-box bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 h-full">
+              <h3 class="text-2xl font-semibold mb-3">🧠 Emotionally Intelligent</h3>
+              <p>MindMend AI understands your tone, mood, and emotional needs. It's trained on therapies like CBT and mindfulness, offering empathetic and effective responses.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 3 -->
+          <div class="swiper-slide">
+            <div class="feature-box bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 h-full">
+              <h3 class="text-2xl font-semibold mb-3">🔒 Safe & Private</h3>
+              <p>All sessions are encrypted end-to-end and stored only with your consent. GDPR and HIPAA compliant, we ensure your privacy and anonymity.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 4 -->
+          <div class="swiper-slide">
+            <div class="feature-box bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 h-full">
+              <h3 class="text-2xl font-semibold mb-3">🎧 Voice & Video Calls</h3>
+              <p>Prefer talking? Our secure voice and video calling offers human-like AI interaction with eye contact and empathy—anywhere, anytime.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 5 -->
+          <div class="swiper-slide">
+            <div class="feature-box bg-white bg-opacity-90 backdrop-blur-md rounded-2xl shadow-xl p-6 h-full">
+              <h3 class="text-2xl font-semibold mb-3">🎨 Personalized Experience</h3>
+              <p>Our AI learns from you. With every session, it adapts to your style, goals, and emotional triggers to create a therapy experience that evolves with you.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Add pagination -->
+        <div class="swiper-pagination mt-4"></div>
+      </div>
+    </div>
+
+    <!-- Meet AI Therapist -->
+    <div class="space-y-6 text-center">
+      <h2 class="text-3xl font-bold text-indigo-500">Meet Your AI Therapist</h2>
+      <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-6 md:p-8 rounded-2xl shadow-2xl">
+        <p class="text-lg max-w-2xl mx-auto">
+          Powered by emotional intelligence and psychology, our AI therapist provides empathetic guidance through voice, text, or video. It doesn't just listen—it understands.
+        </p>
+        <img src="ai_image2.png" alt="AI Therapist Interface" class="mt-6 mx-auto rounded-lg shadow-md max-w-full">
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="space-y-4 max-w-2xl mx-auto">
+      <h2 class="text-2xl font-bold text-gray-800 text-center">How It Works</h2>
+      <ul class="list-disc list-inside space-y-2 text-lg">
+        <li><strong>Step 1:</strong> Sign up and create your profile in under 2 minutes.</li>
+        <li><strong>Step 2:</strong> Choose your preferred communication mode – text, call, or video.</li>
+        <li><strong>Step 3:</strong> Start chatting with your AI therapist. Sessions are unlimited.</li>
+      </ul>
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="pt-10 space-y-4 text-center">
+      <h3 class="text-2xl font-semibold mb-4">Start Your Journey Today</h3>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/chat" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl shadow-lg inline-flex items-center">
+          💬 Chat Now
+        </a>
+        <a href="/call" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-2xl shadow-lg inline-flex items-center">
+          📞 Call Your AI
+        </a>
+        <a href="/video" class="bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-2xl shadow-lg inline-flex items-center">
+          � Start a Video Session
+        </a>
+      </div>
+    </div>
+
+  </div>
+  
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Swiper with proper settings
+      const swiper = new Swiper('.mySwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        grabCursor: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: true,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        },
+        // Prevent conflict with page scrolling
+        simulateTouch: true,
+        touchRatio: 1,
+        touchAngle: 45,
+        shortSwipes: true,
+        longSwipes: false,
+        followFinger: true,
+        preventInteractionOnTransition: true
+      });
+      
+      // Pause autoplay when mouse enters slider
+      const swiperEl = document.querySelector('.mySwiper');
+      swiperEl.addEventListener('mouseenter', function() {
+        swiper.autoplay.stop();
+      });
+      
+      // Resume autoplay when mouse leaves slider
+      swiperEl.addEventListener('mouseleave', function() {
+        swiper.autoplay.start();
+      });
+    });
+  </script>
+
+</body>
+</html>
